@@ -7,4 +7,6 @@ Refer to Google Samples [TodoMVP](https://github.com/googlesamples/android-archi
 * Show Notes 
 * Show Details, Edit, Delete
 * Add Note
-* Database SQLite
+* Database SQLite 
+* Test
+
