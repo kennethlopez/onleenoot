@@ -1,5 +1,7 @@
 package com.example.onleeenoot.notes;
 
+import java.util.List;
+
 public interface NotesContract {
 
     /**
@@ -8,12 +10,18 @@ public interface NotesContract {
      */
     interface View {
 
+        void setPresenter(Presenter presenter);
+
+        void showLoadingIndicator(boolean isLoading);
+
+        void showNotes(List<Note> notes);
     }
 
     /**
      * These are the actions that can be started from the View
      */
-    interface UserActionsListener {
+    interface Presenter {
 
+        void loadNotes();
     }
 }

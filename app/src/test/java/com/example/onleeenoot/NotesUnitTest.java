@@ -27,7 +27,7 @@ public class NotesUnitTest {
     }
 
     @Test
-    public void shouldShowEmptyNotes() throws Exception {
+    public void shouldShowTextIfNotesAreEmpty() throws Exception {
 //        List mockedList = mock(List.class);
 //        when()
 //        mPresenter

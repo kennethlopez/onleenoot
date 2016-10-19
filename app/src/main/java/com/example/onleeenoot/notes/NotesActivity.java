@@ -20,6 +20,8 @@ public class NotesActivity extends AppCompatActivity {
                     .add(R.id.content_frame, notesFragment)
                     .commit();
         }
+
+        new NotesPresenter(notesFragment, new NotesService());
     }
 
 }

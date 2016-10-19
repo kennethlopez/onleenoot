@@ -1,7 +1,10 @@
 package com.example.onleeenoot.notes;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,15 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.onleeenoot.Cheese;
 import com.example.onleeenoot.R;
-import com.example.onleeenoot.util.ListUtil;
 
 import java.util.List;
 
-public class NotesFragment extends Fragment {
+public class NotesFragment extends Fragment implements NotesContract.View {
 
     private RecyclerView mRecycler;
+    private NotesContract.Presenter mPresenter;
+    private NotesAdapter mAdapter;
+    private ProgressDialog mProgressView;
 
     public NotesFragment() {
     }
@@ -29,20 +33,53 @@ public class NotesFragment extends Fragment {
     }
 
     @Override
+    public void setPresenter(NotesContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle icicle) {
         return inflater.inflate(R.layout.fragment_notes, container, false);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        NotesAdapter mAdapter = new NotesAdapter(ListUtil.toList(Cheese.LIST));
-
         mRecycler = (RecyclerView) view.findViewById(R.id.recyclerview);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
         mRecycler.setLayoutManager(lm);
+    }
 
-        mRecycler.setAdapter(mAdapter);
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.loadNotes();
+    }
+
+    @Override
+    public void showLoadingIndicator(boolean isLoading) {
+        if (isLoading) {
+            mProgressView = ProgressDialog.show(getContext(), "", "Loading...", true, false);
+            mProgressView.show();
+        } else {
+            mProgressView.dismiss();
+        }
+    }
+
+    @Override
+    public void showNotes(final List<Note> notes) {
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                mAdapter = new NotesAdapter(notes);
+                mRecycler.setAdapter(mAdapter);
+            }
+        });
     }
 
     class NotesAdapter extends RecyclerView.Adapter<NotesViewHolder> {
