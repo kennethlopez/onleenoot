@@ -15,6 +15,8 @@ public interface NotesContract {
         void showLoadingIndicator(boolean isLoading);
 
         void showNotes(List<Note> notes);
+
+        void launchAddNewNoteScreen();
     }
 
     /**
@@ -23,5 +25,7 @@ public interface NotesContract {
     interface Presenter {
 
         void loadNotes();
+
+        void addNewNote();
     }
 }

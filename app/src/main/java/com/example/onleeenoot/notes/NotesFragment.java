@@ -2,10 +2,12 @@ package com.example.onleeenoot.notes;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.onleeenoot.R;
+import com.example.onleeenoot.addnote.AddNoteActivity;
 
 import java.util.List;
 
@@ -24,6 +27,7 @@ public class NotesFragment extends Fragment implements NotesContract.View {
     private NotesContract.Presenter mPresenter;
     private NotesAdapter mAdapter;
     private ProgressDialog mProgressView;
+    private FloatingActionButton mFab;
 
     public NotesFragment() {
     }
@@ -53,6 +57,14 @@ public class NotesFragment extends Fragment implements NotesContract.View {
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
         mRecycler.setLayoutManager(lm);
+
+        mFab = (FloatingActionButton) view.findViewById(R.id.fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mPresenter.addNewNote();
+            }
+        });
     }
 
     @Override
@@ -80,6 +92,12 @@ public class NotesFragment extends Fragment implements NotesContract.View {
                 mRecycler.setAdapter(mAdapter);
             }
         });
+    }
+
+    @Override
+    public void launchAddNewNoteScreen() {
+        Intent intent = new Intent(getContext(), AddNoteActivity.class);
+        startActivity(intent);
     }
 
     class NotesAdapter extends RecyclerView.Adapter<NotesViewHolder> {

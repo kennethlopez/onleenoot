@@ -32,4 +32,9 @@ public class NotesPresenter implements NotesContract.Presenter {
             }
         }).start();
     }
+
+    @Override
+    public void addNewNote() {
+        mView.launchAddNewNoteScreen();
+    }
 }
